@@ -1,0 +1,247 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* General Styles */
+/* General Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-image: url('/notesbg.webp'); /* Add your image URL here */
+  background-size: cover;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  color: #2e7d32; /* Dark green text color */
+}
+
+.notes-container {
+  max-width: 600px;
+  margin: 120px auto;
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px); /* Blur effect */
+  background-color: rgba(255, 255, 255, 0.7); /* White with transparency */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+  text-align: center;
+  color: #1b5e20; /* Darker green for headings */
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Form Styles */
+#note-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+textarea {
+  width: 100%; /* Make sure the textarea uses full width */
+  height: auto; /* Automatically adjust height based on content */
+  overflow: hidden; /* Hide overflow for better UX */
+  resize: none; /* Prevent manual resizing */
+  
+  margin-bottom: 10px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#save-note {
+  background-color: #03c100; 
+  border-radius: 30px;/* Light green */
+}
+
+#save-note:hover {
+  background-color: #66bb6a; /* Slightly darker green on hover */
+}
+
+/* Notes List Styles */
+#note-list {
+  list-style: none;
+  padding: 0;
+}
+
+#note-list li {
+  padding: 10px;
+  margin: 5px 0;
+  background-color: #ffffff; /* White background for notes */
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  word-wrap: break-word; /* Ensure long words wrap to the next line */
+  overflow-wrap: break-word; /* Handle overflow */
+  width: 97%; /* Ensure the note takes full width of the container */
+  height: auto; /* Let the height adjust based on content */
+  line-height: 1.4; /* Increase line height for better readability */
+  display: block; /* Block-level to allow wrapping */
+  white-space: normal; /* Ensure text wraps to the next line */
+}
+
+.delete-note {
+  background-color: #c50000; /* Light red */
+  border-radius: 30px;
+  margin-top: 15px;
+  width: 100px;
+  margin-left: 460px;
+  box-shadow: 0.3rem 0.4rem 0.4rem rgb(0, 0, 0);
+}
+
+.delete-note:hover {
+  background-color: #ef5350; /* Darker red on hover */
+}
+
+.delete-note {
+  background-color: #c50000; /* Light red */
+  border-radius: 30px;
+  margin-top: 15px;
+  box-shadow: 0.3rem 0.4rem 0.4rem rgb(0, 0, 0);;
+}
+
+.delete-note:hover {
+  background-color: #ef5350; /* Darker red on hover */
+}
+
+/* Icons */
+button::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900; /* For solid icons */
+  margin-right: 5px; /* Space between icon and text */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .notes-container {
+    width: 90%;
+    padding: 15px;
+  }
+
+  textarea {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgb(2,68,0);
+background: linear-gradient(163deg, rgba(2,68,0,1) 16%, rgba(14,255,0,1) 53%, rgba(108,255,0,1) 100%, rgba(255,255,255,1) 100%); /* Darker shade for more contrast */
+    padding: 10px 10px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    font-size: 3.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+nav ul {
+    display: flex;
+    list-style-type: none;
+    gap: 20px;
+}
+
+nav ul li {
+    cursor: pointer;
+    font-size: 10px;
+    transition: color 0.3s;
+    color: black;
+    font-size: 1.3rem;
+    font-weight: 800;
+}
+
+nav ul li:hover {
+    color: #ffeb3b;
+}
+
+/* Search Bar */
+.search-bar {
+    display: flex;
+    gap: 10px;
+}
+
+.search-bar input {
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    width: 250px;
+}
+
+.search-bar button {
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    color: #333;
+}
+  </style>
+</head>
+ <header>
+    <div class="logo"> Herb Vatika
+    </div>
+    <nav>
+      <ul>
+        <a href="/home">
+        <li>Home</li>
+        </a>
+        
+        
+        
+        <a href="/bookmarks" style="text-decoration: none;">
+          <li>bookmark</li>
+        </a>
+        <a href="/notes"style="text-decoration: none;">
+          <li>notes</li>
+        </a>
+        
+      </ul>
+    </nav>
+    <div class="search-bar">
+      <form action="/search" method="GET">
+        <input type="text" name="query" placeholder="Search for plants...">
+        <button type="submit">🔍</button>
+      </form>
+    </div>
+    {{!-- <div class="cart">🛒 Cart (0)</div> --}}
+  </header>
+<div class="notes-container">
+ 
+  <h2>Notes</h2>
+  <form id="note-form" action="/notes" method="POST">
+    <textarea id="noteText" name="noteText" placeholder="Enter your note here..." required></textarea>
+   <button id="save-note" type="submit"><i class="fas fa-save"></i> Save Note</button>
+
+
+
+  </form>
+
+  <ul id="note-list">
+    {{#each notes}}
+      <li>
+        {{this.text}}
+        <form action="/delete-note/{{this._id}}" method="POST">
+  <button class="delete-note" type="submit"><i class="fas fa-trash-alt"></i> Delete</button>
+</form>
+      </li>
+    {{/each}}
+  </ul>
+</div>

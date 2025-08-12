@@ -1,0 +1,108 @@
+{{!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookmarks - Virtual Herbal Garden</title>
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header>
+    <!-- Include your header content here -->
+  </header>
+
+  <h1>Your Bookmarked Plants</h1>
+
+<div class="bookmarks-container">
+  {{#each plants}}
+    <div class="plant-card">
+      <h2>{{this.name}}</h2>
+      <img src="{{this.imageUrl}}" alt="{{this.name}}">
+      <p>{{this.category}}</p>
+      <p>{{this.medicinalUses.[0].use}}</p>
+      <button class="bookmark-btn" data-id="{{this._id}}" data-bookmarked="true">
+        <i class="fas fa-heart bookmarked"></i>
+      </button>
+    </div>
+  {{else}}
+    <p>You haven't bookmarked any plants yet.</p>
+  {{/each}}
+</div>
+
+
+  <footer>
+    <p>© 2024 Virtual Herbal Garden</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html> --}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Virtual Herbal Garden</title>
+<link rel="stylesheet" href="/home.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMX0Wc9vPj/54hdPIqO0eMBI2RklFvG4iUn4io" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>Your Bookmarks</title>
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="/logo.png" alt="" style="height:140px; width: 140px;border-radius:50%"> Herb Vatika
+</div>
+<nav>
+  <ul>
+    <li>Home</li>
+    
+    
+    {{!-- <a href="/bookmarks" style="text-decoration: none;"> --}}
+      <li>Bookmark</li>
+    {{!-- </a> --}}
+    {{!-- <a href="/notes"style="text-decoration: none;"> --}}
+      <li>Notes</li>
+    </a>
+   
+  </ul>
+</nav>
+<div class="search-bar">
+  <form action="/search" method="GET">
+    <input type="text" name="query" placeholder="Search for plants...">
+    <button type="submit">🔍</button>
+  </form>
+</div>
+{{!-- <div class="cart">🛒 Cart (0)</div> --}}
+  </header>
+
+  <main>
+    <h1>Your Bookmarks</h1>
+    <div class="categories">
+      {{#each bookmarkedPlants}}
+      <div class="category-card">
+        <div class="bookmark-icon" data-plant-id="{{this._id}}">
+          <i class="fas fa-bookmark bookmarked"></i>
+        </div>
+        <a href="/plants/{{this.name}}">
+          <img src="{{this.imageUrl}}" alt="{{this.name}}">
+          <p>{{this.name}}</p>
+        </a>
+      </div>
+      {{/each}}
+    </div>
+  </main>
+
+  <footer class="footer" >
+        <p>© 2024 Virtual Herbal Garden</p>
+  </footer>
+
+  <!-- Include your usual script tags -->
+</body>
+</html>

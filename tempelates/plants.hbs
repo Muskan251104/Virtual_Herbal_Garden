@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{plant.name}} - Virtual Herbal Garden</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #058500;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        #container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 10px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .plant-info {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .plant-info img {
+            height: 500px;
+            width: 500px;
+            border-radius: 20px;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 40px;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .plant-info img:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .details-container {
+            display: flex;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .model-container {
+            width: 500px;
+            /* Keep this size for the model */
+            height: 500px;
+            margin-top: 20px;
+            /* Space between image and model */
+            margin-top: 40px;
+            margin-left: 40px;
+            margin-bottom: 20px;
+
+        }
+
+        .text-details {
+            flex: 1;
+            margin-left: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .text-details p,
+        .text-details ul {
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            #container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .plant-info,
+            .text-details {
+                margin: 0;
+            }
+
+            .plant-info img {
+                max-width: 300px;
+            }
+
+            .model-container {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        #backhome {
+            height: 50px;
+            width: 160px;
+            background-color: #ffffff;
+            color: rgb(0, 0, 0);
+            border-radius: 10px;
+            font-weight: 800;
+            font-size: 15px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgb(2, 68, 0);
+            background: linear-gradient(163deg, rgba(2, 68, 0, 1) 16%, rgba(14, 255, 0, 1) 53%, rgba(108, 255, 0, 1) 100%, rgba(255, 255, 255, 1) 100%);
+            /* Darker shade for more contrast */
+            padding: 10px 10px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 98.5%;
+        }
+
+        .logo {
+            font-size: 3.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style-type: none;
+            gap: 20px;
+        }
+
+        nav ul li {
+            cursor: pointer;
+            font-size: 10px;
+            transition: color 0.3s;
+            color: black;
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        nav ul li:hover {
+            color: #ffeb3b;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-bar input {
+            padding: 10px;
+            border-radius: 25px;
+            border: 1px solid #ccc;
+            width: 250px;
+        }
+
+        .search-bar button {
+            padding: 10px 16px;
+            background-color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #333;
+        }
+        #listen-button{
+            background-color: #ffffff; /* Light red */
+  border-radius: 30px;
+  margin-top: 15px;
+  box-shadow: 0.3rem 0.4rem 0.4rem rgb(0, 0, 0);;
+  font-size: 15px;
+  font-weight: 700;
+  font-style: italic;
+  height: 40px;
+  padding: 15px;
+        }
+
+           #pause-button{
+            background-color: #ffffff; /* Light red */
+  border-radius: 30px;
+  margin-top: 15px;
+  box-shadow: 0.3rem 0.4rem 0.4rem rgb(0, 0, 0);;
+  font-size: 15px;
+  font-weight: 700;
+  font-style: italic;
+  height: 40px;
+  padding: 15px;
+        }
+
+
+   #resume-button{
+            background-color: #ffffff; /* Light red */
+  border-radius: 30px;
+  margin-top: 15px;
+  box-shadow: 0.3rem 0.4rem 0.4rem rgb(0, 0, 0);;
+  font-size: 15px;
+  font-weight: 700;
+  font-style: italic;
+  height: 40px;
+  padding: 15px;
+        }
+
+
+    </style>
+
+</head>
+
+<body>
+    <header>
+        <div class="logo"><img src="/logo.png" alt="" style="height:140px; width: 140px;border-radius:50%"> Herb Vatika
+        </div>
+        <nav>
+            <ul>
+                <a href="/home" style="text-decoration: none;">
+                    <li>Home</li>
+                </a>
+
+
+
+                <a href="/bookmarks" style="text-decoration: none;">
+                    <li>Bookmark</li>
+                </a>
+                <a href="/notes" style="text-decoration: none;">
+                    <li>Notes</li>
+                </a>
+                
+            </ul>
+        </nav>
+        <div class="search-bar">
+            <form action="/search" method="GET">
+                <input type="text" name="query" placeholder="Search for plants...">
+                <button type="submit">🔍</button>
+            </form>
+        </div>
+
+    </header>
+    <h1>{{plant.name}}</h1>
+
+    <div id="container">
+        <div class="plant-info">
+            <img src="{{plant.imageUrl}}" alt="{{plant.name}}">
+            <div id="model-container" class="model-container"></div>
+        </div>
+        <div class="text-details">
+            <!-- Botanical Name -->
+            <p><strong>Botanical Name:</strong> {{plant.botanicalName}}</p>
+
+            <!-- Common Names -->
+            <p><strong>Common Names:</strong>
+                {{#each plant.commonNames}}
+                {{this}}{{#unless @last}}, {{/unless}}
+                {{/each}}
+            </p>
+
+            <!-- Category -->
+            <p><strong>Category:</strong> {{plant.category}}</p>
+
+            <!-- Habitat -->
+            <p><strong>Native Region:</strong> {{plant.habitat.nativeRegion}}</p>
+            <p><strong>Soil:</strong> {{plant.habitat.growingConditions.soil}}</p>
+            <p><strong>Sunlight:</strong> {{plant.habitat.growingConditions.sunlight}}</p>
+            <p><strong>Water:</strong> {{plant.habitat.growingConditions.water}}</p>
+
+            <!-- Medicinal Uses -->
+            <p><strong>Medicinal Uses:</strong></p>
+            <ul>
+                {{#each plant.medicinalUses}}
+                <li><strong>{{this.use}}:</strong> {{this.description}}</li>
+                {{/each}}
+            </ul>
+
+            <!-- Methods of Cultivation -->
+            <p><strong>Methods of Cultivation:</strong></p>
+            <ul><li><strong>Propagation:</strong> {{plant.methodsOfCultivation.propagation}}</li>
+            <li><strong>Planting Instructions:</strong> {{plant.methodsOfCultivation.planting.instructions}}</li>
+            <li><strong>Spacing:</strong> {{plant.methodsOfCultivation.planting.spacing}}</li>
+            <li><strong>Watering:</strong> {{plant.methodsOfCultivation.watering}}</li>
+            <li><strong>Fertilization:</strong> {{plant.methodsOfCultivation.fertilization}}</li>
+            <li><strong>Pruning:</strong> {{plant.methodsOfCultivation.pruning}}</li>
+            <li><strong>Pests and Diseases:</strong> {{plant.methodsOfCultivation.pestsAndDiseases}}</li></ul>
+            
+        </div>
+    </div>
+
+    {{!-- <button id="backhome"><a href="/" style="text-decoration: none; color:black">Back to Home</a></button> --}}
+    {{!-- <div class="btns" style="display: flex; justify-content:space-between;"> --}}
+    <button id="listen-button">Listen to details</button>
+    <button id="pause-button">Pause</button>
+    <button id="resume-button">Resume</button>
+
+    {{!-- </div> --}}
+    <!-- Existing content of plants.hbs -->
+
+    {{!-- <div class="video-section">
+        <h2>Watch Our Videos</h2>
+        <video controls width="400px" height="400px">
+            <source src="/tulsivideo.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div> --}}
+
+
+    <script>
+        const container = document.getElementById('model-container');
+
+        const scene = new THREE.Scene();
+
+        // Camera setup
+        const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+        camera.position.set(0, 1, 5);  // Adjust the camera position as needed
+
+        // Renderer setup with container size
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        container.appendChild(renderer.domElement);
+
+        // Light setup
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(10, 10, 10).normalize();
+        scene.add(directionalLight);
+
+        // GLTF model loader
+        const loader = new THREE.GLTFLoader();
+        const modelUrl = '{{plant.modelUrl}}'; // Ensure this path is correct
+
+        loader.load(modelUrl, function (gltf) {
+            const model = gltf.scene;
+            model.scale.set(1.5, 1.5, 1.5); // Adjust scale if needed
+            scene.add(model);
+
+            // Animate model
+            const animate = function () {
+                requestAnimationFrame(animate);
+                model.rotation.y += 0.01; // Add rotation for effect
+                renderer.render(scene, camera);
+            };
+            animate();
+        }, undefined, function (error) {
+            console.error('Error loading model:', error);
+        });
+
+        // Orbit controls for camera
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+
+        // Adjust renderer size on window resize
+        window.addEventListener('resize', () => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            renderer.setSize(width, height);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+        });
+    </script>
+
+    {{!-- <script>// Get the listen button and the text details
+        const listenButton = document.getElementById('listen-button');
+        const pauseButton = document.getElementById('pause-button');
+        const resumeButton = document.getElementById('resume-button');
+        const textDetails = document.querySelector('.text-details');
+
+        // Add an event listener to the listen button
+        listenButton.addEventListener('click', () => {
+            // Get the text from the text details
+            { { !-- const text = textDetails.innerText; --} }
+
+            function generateExplanation(plantData) {
+                const explanation = `The ${plantData.name} is a ${plantData.category} that is native to ${plantData.habitat.nativeRegion}. It is known for its ${plantData.medicinalUses[0].use} properties, which make it a popular ingredient in many traditional medicines. The plant is also used in cooking and is a popular ingredient in many dishes. It is a ${plantData.methodsOfCultivation.propagation} plant that requires ${plantData.methodsOfCultivation.planting.instructions} and ${plantData.methodsOfCultivation.watering} to grow. It is a relatively low-maintenance plant that is easy to care for and can thrive in a variety of environments.`;
+                return explanation;
+            }
+
+            // Get the plant data
+            const plantData = {
+                name: "{{plant.name}} ",
+                category: '{{plant.category}}',
+                habitat: {
+                    nativeRegion: '{{plant.habitat.nativeRegion}}'
+                },
+
+                medicinalUses: [
+                    {
+                        use: '{{plant.medicinalUses.0.use}}'
+                    }
+                ],
+                methodsOfCultivation: {
+                    propagation: '{{plant.methodsOfCultivation.propagation}}',
+                    planting: {
+                        instructions: '{{plant.methodsOfCultivation.planting.instructions}}'
+                    },
+                    watering: '{{plant.methodsOfCultivation.watering}}'
+                }
+            };
+
+            // Generate a detailed explanation of the plant
+            const explanation = generateExplanation(plantData);
+
+            // Create a new SpeechSynthesisUtterance object with the explanation
+            const utterance = new SpeechSynthesisUtterance(explanation);
+            // Create a new SpeechSynthesisUtterance object
+            { { !-- const utterance = new SpeechSynthesisUtterance(text); --} }
+
+            // Set the voice and language
+            utterance.voice = window.speechSynthesis.getVoices()[0];
+            utterance.lang = 'en-IN';
+
+            // Set the rate and pitch
+            utterance.rate = 0.7;
+            utterance.pitch = 1;
+
+            // Speak the text
+            window.speechSynthesis.speak(utterance);
+            pauseButton.addEventListener('click', () => {
+                window.speechSynthesis.pause();
+            });
+
+            // Add an event listener to the resume button
+            resumeButton.addEventListener('click', () => {
+                window.speechSynthesis.resume();
+            });
+        });</script> --}}
+
+         <script>
+        const listenButton = document.getElementById('listen-button');
+        const pauseButton = document.getElementById('pause-button');
+        const resumeButton = document.getElementById('resume-button');
+        let utterance;
+
+        function generateExplanation(plantData) {
+            return `The ${plantData.name} is a ${plantData.category} that is native to ${plantData.habitat.nativeRegion}. It is known for its ${plantData.medicinalUses[0].use} properties, which make it a popular ingredient in many traditional medicines. The plant is also used in cooking and is a popular ingredient in many dishes. It is a ${plantData.methodsOfCultivation.propagation} plant that requires ${plantData.methodsOfCultivation.planting.instructions} and ${plantData.methodsOfCultivation.watering} to grow. It is a relatively low-maintenance plant that is easy to care for and can thrive in a variety of environments.`;
+        }
+
+        listenButton.addEventListener('click', () => {
+            const plantData = {
+                name: "{{plant.name}}",
+                category: '{{plant.category}}',
+                habitat: {
+                    nativeRegion: '{{plant.habitat.nativeRegion}}'
+                },
+                medicinalUses: [
+                    {
+                        use: '{{plant.medicinalUses.0.use}}'
+                    }
+                ],
+                methodsOfCultivation: {
+                    propagation: '{{plant.methodsOfCultivation.propagation}}',
+                    planting: {
+                        instructions: '{{plant.methodsOfCultivation.planting.instructions}}'
+                    },
+                    watering: '{{plant.methodsOfCultivation.watering}}'
+                }
+            };
+
+            const explanation = generateExplanation(plantData);
+            utterance = new SpeechSynthesisUtterance(explanation);
+            utterance.lang = 'en-US';
+            utterance.rate = 0.9;
+            utterance.pitch = 1;
+
+            window.speechSynthesis.cancel(); // Cancel any ongoing speech
+            window.speechSynthesis.speak(utterance);
+        });
+
+        pauseButton.addEventListener('click', () => {
+            window.speechSynthesis.pause();
+        });
+
+        resumeButton.addEventListener('click', () => {
+            window.speechSynthesis.resume();
+        });
+    </script>
+    {{!--
+    <script>
+        // Same Three.js and GLTFLoader code here
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(400, 400);  // Change to match container size
+        document.getElementById('model-container').appendChild(renderer.domElement);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(10, 10, 10).normalize();
+        scene.add(directionalLight);
+
+        const loader = new THREE.GLTFLoader();
+        loader.load('{{plant.modelUrl}}', function (gltf) {
+            const plantModel = gltf.scene;
+            plantModel.scale.set(0.2, 0.2, 0.2);
+            scene.add(plantModel);
+        });
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        camera.position.set(0, 1, 5);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            renderer.setSize(400, 400);
+            camera.aspect = 400 / 400;
+            camera.updateProjectionMatrix();
+        });
+    </script> --}}
+
+</body>
+
+</html>
